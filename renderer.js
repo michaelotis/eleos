@@ -9,7 +9,7 @@ let tableify = require("tableify");
 
 let memos = [], options = [], oldOptions = [], privTxs = [], shieldedOpts = [], transOpts = [], txs = [];
 let genHistory = {"transparent": false, "private": false};
-
+	
 function hexToString(s) {
     let str = "";
     for (let i = 0; i < s.length; i++) {
@@ -146,7 +146,7 @@ ipcRenderer.on("jsonQuery-reply", (event, arg) => {
         let status = ((arg.result.blocks / arg.result.headers) * 100).toFixed(1);
         document.getElementById("syncStatusValue").innerHTML = status;
         if (status < 100) {
-            document.getElementById("syncStatusLabel").style.backgroundColor = "yellow";
+            document.getElementById("syncStatusLabel").style.backgroundColor = "black";
         }
         else {
             document.getElementById("syncStatusLabel").style.backgroundColor = "";

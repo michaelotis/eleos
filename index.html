@@ -4,7 +4,6 @@
 		<meta charset="UTF-8">
 		<title>Eleos for Zclassic - Equihash Wallet and Messaging</title>
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<script type="text/javascript" src="electron-open-link-in-browser.js"></script>
 	</head>
 	<body>
 		<!-- Sidebar -->
@@ -102,12 +101,8 @@
                         </div>
                         <div class="w3-container w3-center w3-margin-top">
                             <button type="button" id="newTransparentAddress" onclick="getNewTransparentAddress()">New Transparent Address</button>
-                            <button type="button" id="existingPrivateAddress" onclick="getNewPrivateAddress()">Re-use Private Address</button>
                             <button type="button" id="newPrivateAddress" onclick="getNewPrivateAddress()">New Private Address</button>
                         </div>
-                        <!--<div class="w3-container w3-center w3-margin-top">
-                            <button type="button" id="generateQR" onclick="">Generate QR Code</button>
-                        </div>-->
                     </form>
 				</div>
 			</section>
@@ -115,6 +110,7 @@
 				<div class="inner">
 					<span id="addressTransparentSpan"></span>
                     <span id="addressPrivateSpan"></span>
+					<button type="button" id="getPrivateKey" onclick="getPrivateKey()">Get Private Key</button>
 				</div>
 			</section>
 		</div>
@@ -214,6 +210,42 @@
       function getNewPrivateAddress() {
           document.getElementById("receivingAddressValue").value = renderer.generateQuerySync('z_getnewaddress', []).result;
       }
+	function getPrivateKey() {
+	    const {dialog} = require("electron").remote;
+		const fs = require('fs');
+
+		var savePath = dialog.showSaveDialog({});
+		
+		var now = new Date();
+		now = now.toISOString().split('.')[0] + 'Z';
+
+		var fileStr = '# Wallet dump created by eleos\n';
+		fileStr += '# Created on ' + now + '\n\n\n';
+
+		var res = renderer.generateQuerySync("z_listaddresses", []).result;
+		res.forEach(function(key) {
+			var pKey = renderer.generateQuerySync("z_exportkey", [key]);
+			fileStr += pKey.result;
+			fileStr += ' ' + now + ' ' + 'label=' + ' ' + '# addr=' + key;
+			fileStr += '\n';
+		});
+		
+		fileStr += '\n';
+		
+		var res = renderer.generateQuerySync("listreceivedbyaddress", [0, true]).result;
+		console.log(res);
+		res.forEach(function(key) {
+			var pKey = renderer.generateQuerySync("dumpprivkey", [key.address]);
+			fileStr += pKey.result;
+			fileStr += ' ' + now + ' ' + 'label=' + ' ' + '# addr=' + key.address;
+			fileStr += '\n';
+		});
+
+		fs.writeFile(savePath, fileStr, function(err) {
+			console.log(err);
+		});
+    }
+	  
       function sendTransparentTransaction() {
           let sendTo = document.getElementById("transparentSendToValue").value;
           let amount = document.getElementById("transparentAmountValue").value;
