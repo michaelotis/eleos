@@ -1,35 +1,53 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Eleos - Equihash Wallet and Messaging</title>
-      <link rel="stylesheet" href="resources/w3.css">
-      <link rel="stylesheet" href="resources/styles.css">
-  </head>
-  <body>
-        <div class="containerDiv w3-light-gray">
-            <div class="tabsBar">
-                <ul class="w3-navbar w3-light-gray">
-                    <!--<li><a class="navLink" id="networkTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('networkPage')">Network</a></li>-->
-                    <li><a class="navLink" id="historyTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('historyPage')">History</a></li>
-                    <li><a class="navLink" id="memoTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('memoPage')">Memos</a></li>
-                    <li><a class="navLink" id="sendTTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('sendTransparentPage')">Send Transparent</a></li>
-                    <li><a class="navLink" id="sendPTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('sendPrivatePage')">Send Private</a></li>
-                    <li><a class="navLink" id="receiveTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('receivePage')">Receive</a></li>
-                    <li><a class="navLink" id="addressesTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('addressesPage')">Addresses</a></li>
-                    <li><a class="navLink" id="consoleTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('consolePage')">Console</a></li>
-                </ul>
-            </div>
-            <div class="bodyDiv" id="bodyDiv">
-                <span class="alertSpan" id="alertSpan"></span>
-                <div class="page" id="networkPage"></div>
-                <div class="page" id="historyPage">
-                    <span id="transactionTransparentSpan"></span>
+	<head>
+		<meta charset="UTF-8">
+		<title>Eleos for Zclassic - Equihash Wallet and Messaging</title>
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<script type="text/javascript" src="electron-open-link-in-browser.js"></script>
+	</head>
+	<body>
+		<!-- Sidebar -->
+		<section id="sidebar">
+			<div class="inner">
+				<nav>
+					<ul>
+						<li class="active"><a class="navLink" id="welcomeTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('welcomePage')">Welcome</a></li>
+						<li><a class="navLink" id="historyTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('historyPage')">History</a></li>
+						<li><a class="navLink" id="memoTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('memoPage')">Memos</a></li>
+						<li><a class="navLink" id="sendTTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('sendTransparentPage')">Send Transparent</a></li>
+						<li><a class="navLink" id="sendPTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('sendPrivatePage')">Send Private</a></li>
+						<li><a class="navLink" id="receiveTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('receivePage')">Receive</a></li>
+						<li><a class="navLink" id="addressesTab" href="javascript:void(0)" onclick="setActiveNav(this); openPage('addressesPage')">Addresses</a></li>
+					</ul>
+				</nav>
+			</div>
+		</section>
+		<!-- Wrapper -->
+		<div id="wrapper">
+			<!-- Intro -->
+			<section id="welcomePage" class="wrapper" style="display:flex;">
+				<div class="inner">
+					<h1><img src="assets/css/images/logo-dark.png"/></h1>
+					<p>Zclassic is financial freedom.</p>
+					<ul class="actions">
+						<li><a href="http://zclassic.org/" onclick="launchZclassicOrg()" class="button">Learn more</a></li>
+					</ul>
+					<span id="alertSpan" class="alertSpan">Initializing, please wait...</span>
+				</div>
+			</section>
+			<section id="historyPage" class="wrapper">
+				<div class="inner">
+					<span id="transactionTransparentSpan"></span>
                     <span id="transactionPrivateSpan"></span>
-                </div>
-                <div class="page" id="memoPage"></div>
-                <div class="page w3-container" id="sendTransparentPage">
-                    <form class="w3-container w3-margin-top w3-medium">
+				</div>
+			</section>
+			<section id="memoPage" class="wrapper">
+				<div class="inner" id="memoPageinner"></div>
+			</section>
+			<section id="sendTransparentPage" class="wrapper">
+				<div class="inner">
+					<form class="w3-container w3-margin-top w3-medium">
                         <div class="w3-container">
                             <label id="transparentAvailableField">Available Transparent Balance: </label><span class="" id="transparentAvailableValue"> </span> <span class="w3-small coin"></span><br /><br />
                             <label id="transparentSendToField">Send To</label><input class="w3-input w3-round" type="text" id="transparentSendToValue" title="transparentSendToValue"/>
@@ -40,9 +58,11 @@
                             <button type="button" id="transparentResetButton" onclick="transparentReset()">Reset</button>
                         </div>
                     </form>
-                </div>
-                <div class="page w3-container" id="sendPrivatePage">
-                    <form class="w3-container w3-margin-top w3-medium">
+				</div>
+			</section>
+			<section id="sendTransparentPage" class="wrapper">
+				<div class="inner">
+					<form class="w3-container w3-margin-top w3-medium">
                         <div class="w3-container">
                             <label id="privateFromField">From</label><select class="w3-select w3-round w3-small" id="privateFromSelect" title="privateFromSelect"></select>
                             <label id="privateSendToField">Send To</label><input class="w3-input w3-round" type="text" id="privateSendToValue" title="privateSendToValue"/>
@@ -54,9 +74,27 @@
                             <button type="button" id="privateResetButton" onclick="privateReset()">Reset</button>
                         </div>
                     </form>
-                </div>
-                <div class="page w3-container" id="receivePage">
-                    <form class="w3-container w3-margin-top w3-medium">
+				</div>
+			</section>
+			<section id="sendPrivatePage" class="wrapper">
+				<div class="inner">
+					<form class="w3-container w3-margin-top w3-medium">
+                        <div class="w3-container">
+                            <label id="privateFromField">From</label><select class="w3-select w3-round w3-small" id="privateFromSelect" title="privateFromSelect"></select>
+                            <label id="privateSendToField">Send To</label><input class="w3-input w3-round" type="text" id="privateSendToValue" title="privateSendToValue"/>
+                            <label id="privateAmountField">Amount</label><input class="w3-input w3-round" type="number" id="privateAmountValue" title="privateAmountValue"/>
+                            <label id="privateMemoField">Encrypted Memo</label><input class="w3-input w3-round" type="text" id="privateMemoValue" title="privateMemoValue"/>
+                        </div>
+                        <div class="w3-container w3-center w3-margin-top">
+                            <button type="button" id="privateSendButton" onclick="sendPrivateTransaction()">Send</button>
+                            <button type="button" id="privateResetButton" onclick="privateReset()">Reset</button>
+                        </div>
+                    </form>
+				</div>
+			</section>
+			<section id="receivePage" class="wrapper">
+				<div class="inner">
+					<form class="w3-container w3-margin-top w3-medium">
                         <div class="w3-container">
                             <label id="receivingAddressField">Receiving Address</label><input class="w3-input w3-round" type="text" id="receivingAddressValue" title="receivingAddressValue"/>
                             <label id="descriptionField">Description</label><input class="w3-input w3-round" type="text" id="descriptionValue" title="descriptionValue"/>
@@ -67,49 +105,53 @@
                             <button type="button" id="existingPrivateAddress" onclick="getNewPrivateAddress()">Re-use Private Address</button>
                             <button type="button" id="newPrivateAddress" onclick="getNewPrivateAddress()">New Private Address</button>
                         </div>
-                        <div class="w3-container w3-center w3-margin-top">
-                            <!--<button type="button" id="generateQR" onclick="">Generate QR Code</button>-->
-                        </div>
+                        <!--<div class="w3-container w3-center w3-margin-top">
+                            <button type="button" id="generateQR" onclick="">Generate QR Code</button>
+                        </div>-->
                     </form>
-                </div>
-                <div class="page" id="addressesPage">
-                    <span id="addressTransparentSpan"></span>
+				</div>
+			</section>
+			<section id="addressesPage" class="wrapper">
+				<div class="inner">
+					<span id="addressTransparentSpan"></span>
                     <span id="addressPrivateSpan"></span>
-                </div>
-                <div class="page" id="consolePage" style="height: 100%; width: 100%;">
-                    <object type="text/html" data="http://127.0.0.1:3000/console.html" style="height: 100%; width: 100%;"></object>
-                </div>
-            </div>
-            <div class="statusBar">
-                <span class="w3-small" id="statusBar">Current Balance: <span class="w3-small" id="currentBalanceValue"></span> <span class="w3-small coin"></span>
-                    &nbsp;(Transparent: <span class="w3-small" id="transparentBalanceValue"></span> <span class="w3-small coin"></span>/ Private: <span class="w3-small" id="privateBalanceValue"></span> <span class="w3-small coin"></span>)
+				</div>
+			</section>
+		</div>
+		<footer id="footer">
+			<span class="w3-small" id="statusBar">Current Balance: <span class="w3-small" id="currentBalanceValue"></span> <span class="w3-small coin"></span>
+                    &nbsp;(Transparent: <span class="w3-small" id="transparentBalanceValue"></span> <span class="w3-small coin"></span> / Private: <span class="w3-small" id="privateBalanceValue"></span> <span class="w3-small coin"></span>)
                     &nbsp;<span class="w3-small w3-right-align" id="connectionsField">| Connections: <span class="w3-small" id="connectionsValue"></span></span>
                     &nbsp;| <span class="w3-small" id="syncStatusLabel">Sync Status: <span class="w3-small" id="syncStatusValue"></span>%</span></span>
-            </div>
-        </div>
-
+		</footer>
   </body>
-
+  
   <script>
-      const renderer = require('./renderer.js');
+	function launchZclassicOrg() {
+		var shell = require('electron').shell;
+		event.preventDefault();
+		shell.openExternal('http://zclassic.org/');
+    }
+	
+	const renderer = require('./renderer.js');
 
       function openPage(pageName) {
           if (document.getElementById("alertSpan").innerHTML.length < 2) {
               let i;
-              let x = document.getElementsByClassName("page");
+              let x = document.getElementsByClassName("wrapper");
               for (i = 0; i < x.length; i++) {
                   x[i].style.display = "none";
               }
-              document.getElementById(pageName).style.display = "block";
+              document.getElementById(pageName).style.display = "flex";
           } else {
-              setActiveNav(document.getElementById("historyTab"));
+              setActiveNav(document.getElementById("welcomePage"));
           }
       }
       function setActiveNav(element) {
           for (let i = 0; i < document.getElementsByClassName('navLink').length; i++) {
-              document.getElementsByClassName('navLink')[i].className = 'navLink';
+              document.getElementsByClassName('navLink')[i].parentNode.className = '';
           }
-          element.className += ' w3-green';
+          element.parentNode.className += ' active';
       }
       /* // TODO: add emoji support
        function stringToHex(s)
@@ -195,6 +237,6 @@
       }
 
       // set default tab
-      document.getElementById("historyTab").click();
+      document.getElementById("welcomePage").click();
   </script>
 </html>

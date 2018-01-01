@@ -93,7 +93,7 @@ function getUserDataDir() {
 
 function clearConfig(callback) {
     data = {
-        "coin": "zen",
+        "coin": "zcl",
         "rpcUser": "",
         "rpcPass": "",
         "rpcIP": "127.0.0.1",
@@ -138,13 +138,22 @@ function checkCoinConfig(callback) {
         if (!fs.existsSync(app.getPath("appData") + zclPath)) {
             fs.mkdirSync(app.getPath("appData") + zclPath);
         }
-        let data = [
-            "rpcuser=zclrpc",
-            "rpcpassword=" + crypto.randomBytes(8).toString("hex"),
-            "rpcport=8232",
-            "addnode=zcl.suprnova.cc"
-        ];
-        fs.writeFileSync(app.getPath("appData") + zclPath + "/zclassic.conf", data.join("\n"));
+		//Create empty file to prevent bug
+		fs.writeFileSync(app.getPath("appData") + zclPath + "/zclassic.conf", "");
+		//Get peers from github /!\ Need to fix that /!\ */
+        var request = require('request');
+		request.get('https://github.com/z-classic/zclassic/releases/download/1.1/peers.txt', function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				var configjson = body;
+				let data = [
+					"rpcuser=zclrpc",
+					"rpcpassword=" + crypto.randomBytes(8).toString("hex"),
+					"rpcport=8232",
+					configjson
+				];
+				fs.writeFileSync(app.getPath("appData") + zclPath + "/zclassic.conf", data.join("\n"));
+			}
+		});
     }
     else if ((config.coin.toLowerCase() === "zec") && (!fs.existsSync(app.getPath("appData") + zecPath + "/zcash.conf"))) {
         if (!fs.existsSync(app.getPath("appData") + zecPath)) {
@@ -538,7 +547,7 @@ function createWindow() {
                             }
                         );
                     }
-                },
+                }/*,
                 {type: "separator"},
                 {
                     label: "Restore ZEN from ZCL wallet.dat",
@@ -583,25 +592,13 @@ function createWindow() {
                             });
                         }
                     }
-                }
-            ]
-        },
-        {
-            label: "Edit",
-            submenu: [
-                {label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:"},
-                {label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:"},
-                {type: "separator"},
-                {label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:"},
-                {label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:"},
-                {label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:"},
-                {label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:"}
+                }*/
             ]
         },
         {
             label: "Options",
             submenu: [
-                {
+               /* {
                     label: "Set Coin",
                     submenu: [
                         {
@@ -641,7 +638,7 @@ function createWindow() {
                             }
                         }
                     ]
-                },
+                },*/
                 {
                     label: "Set Wallet Daemon",
                     click() {
@@ -729,11 +726,12 @@ function createWindow() {
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
 
+	
     mainWindow = new BrowserWindow({
-        "minWidth": 840,
-        "minHeight": 480,
-        "width": 840,
-        "height": 480,
+        "minWidth": 1040,
+        "minHeight": 680,
+        "width": 1040,
+        "height": 680,
         icon: "resources/" + config.coin.toLowerCase() + ".png"
     });
 

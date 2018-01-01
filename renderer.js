@@ -79,7 +79,7 @@ function generateMemoTable(memos) {
     let div = document.createElement("div");
     div.innerHTML = tableElement;
     div.firstElementChild.className += " w3-table-all w3-tiny";
-    document.getElementById("memoPage").innerHTML = div.innerHTML;
+    document.getElementById("memoPageinner").innerHTML = div.innerHTML;
 }
 
 function generateHistoryTable(txs, privTxs) {
@@ -133,7 +133,7 @@ function generateHistoryTable(txs, privTxs) {
 
 ipcRenderer.on("jsonQuery-reply", (event, arg) => {
     if (arg.error && arg.error.code === -28) {
-        document.getElementById("alertSpan").innerHTML = '<img src="resources/box.gif" style="display: block; margin: auto; padding-top: 15px;"/><h2 style="text-align: center;">' + arg.error.message + '</h2>';
+        document.getElementById("alertSpan").innerHTML = '<h4>' + arg.error.message + '</h4>';
     }
     else {
         document.getElementById("alertSpan").innerHTML = "";
@@ -312,8 +312,7 @@ ipcRenderer.on("coin-reply", (event, arg) => {
 
 ipcRenderer.on("params-pending", (event, arg) => {
     if (arg.percent < 1) {
-        document.getElementById("alertSpan").innerHTML = '<img src="resources/box.gif" style="display: block; margin: auto; padding-top: 15px;"/>' +
-            '<h2 style="text-align: center;">downloading proving and verification keys</h2>' +
+        document.getElementById("alertSpan").innerHTML = '<h4 style="text-align: center;">Downloading proving and verification keys</h4>' +
             '<h4 style="text-align: center;">' + (arg.name.substr(arg.name.lastIndexOf('/') + 1)) + '</h4>' +
             '<h4 style="text-align: center;">' + (arg.percent * 100).toFixed(2) + '%</h4>';
     }
@@ -324,8 +323,7 @@ ipcRenderer.on("params-pending", (event, arg) => {
 
 ipcRenderer.on("params-complete", (event, arg) => {
     if (arg === false) {
-        document.getElementById("alertSpan").innerHTML = '<img src="resources/box.gif" style="display: block; margin: auto; padding-top: 15px;"/>' +
-            '<h2 style="text-align: center;">initializing</h2>';
+        document.getElementById("alertSpan").innerHTML = '<h3 style="text-align: center;">Initializing</h3>';
     }
     else {
         document.getElementById("alertSpan").innerHTML = "";
