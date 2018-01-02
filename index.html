@@ -59,22 +59,6 @@
                     </form>
 				</div>
 			</section>
-			<section id="sendTransparentPage" class="wrapper">
-				<div class="inner">
-					<form class="w3-container w3-margin-top w3-medium">
-                        <div class="w3-container">
-                            <label id="privateFromField">From</label><select class="w3-select w3-round w3-small" id="privateFromSelect" title="privateFromSelect"></select>
-                            <label id="privateSendToField">Send To</label><input class="w3-input w3-round" type="text" id="privateSendToValue" title="privateSendToValue"/>
-                            <label id="privateAmountField">Amount</label><input class="w3-input w3-round" type="number" id="privateAmountValue" title="privateAmountValue"/>
-                            <label id="privateMemoField">Encrypted Memo</label><input class="w3-input w3-round" type="text" id="privateMemoValue" title="privateMemoValue"/>
-                        </div>
-                        <div class="w3-container w3-center w3-margin-top">
-                            <button type="button" id="privateSendButton" onclick="sendPrivateTransaction()">Send</button>
-                            <button type="button" id="privateResetButton" onclick="privateReset()">Reset</button>
-                        </div>
-                    </form>
-				</div>
-			</section>
 			<section id="sendPrivatePage" class="wrapper">
 				<div class="inner">
 					<form class="w3-container w3-margin-top w3-medium">
@@ -196,10 +180,12 @@
       }
       */
       function transparentReset() {
+          document.getElementById("privateFromSelect").value = "";
           document.getElementById("transparentSendToValue").value = "";
           document.getElementById("transparentAmountValue").value = "";
       }
       function privateReset() {
+          document.getElementById("privateFromSelect").value = "";
           document.getElementById("privateSendToValue").value = "";
           document.getElementById("privateAmountValue").value = "";
           document.getElementById("privateMemoValue").value = "";

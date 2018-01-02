@@ -144,7 +144,10 @@ ipcRenderer.on("jsonQuery-reply", (event, arg) => {
     }
     else if (arg.id === "getblockchaininfo" && arg.result) {
         let status = ((arg.result.blocks / arg.result.headers) * 100).toFixed(1);
-        document.getElementById("syncStatusValue").innerHTML = status;
+		
+		if(isNaN(status))
+			status = 0;
+		
         if (status < 100) {
             document.getElementById("syncStatusLabel").style.backgroundColor = "black";
         }
