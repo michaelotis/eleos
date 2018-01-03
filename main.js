@@ -93,7 +93,7 @@ function getUserDataDir() {
 
 function getAppDataDir() {
 	if ((os.platform() === "win32") || (os.platform() === "darwin")) {
-        return getAppDataDir();
+        return app.getPath("appData");
     }
     else {
         return app.getPath("home");
@@ -196,29 +196,38 @@ function checkParams() {
         keyVerification.provingDownloading === true) {
         return;
     }
-    if (!fs.existsSync(getAppDataDir() + "/ZcashParams/")) {
-        fs.mkdirSync(getAppDataDir() + "/ZcashParams/");
+	// generic locations for zclassic
+    let zclPathParams;
+    if ((os.platform() === "win32") || (os.platform() === "darwin")) {
+        zclPathParams = "/ZcashParams";
     }
-    getFileHash(getAppDataDir() + "/ZcashParams/sprout-verifying.key", function (result) {
+    else {
+        zclPathParams = "/.zcash-params";
+    }
+	
+    if (!fs.existsSync(getAppDataDir() + zclPathParams)) {
+        fs.mkdirSync(getAppDataDir() + zclPathParams);
+    }
+    getFileHash(getAppDataDir() + zclPathParams + "/sprout-verifying.key", function (result) {
         if (result === "4bd498dae0aacfd8e98dc306338d017d9c08dd0918ead18172bd0aec2fc5df82") {
             keyVerification.verifying = true;
         }
         else {
             keyVerification.verifyingDownloading = true;
-            fileDownload("https://z.cash/downloads/sprout-verifying.key", getAppDataDir() + "/ZcashParams/sprout-verifying.key",
+            fileDownload("https://z.cash/downloads/sprout-verifying.key", getAppDataDir() + zclPathParams + "/sprout-verifying.key",
                 function () {
                     keyVerification.verifying = true;
                     keyVerification.verifyingDownloading = false;
                 });
         }
     });
-    getFileHash(getAppDataDir() + "/ZcashParams/sprout-proving.key", function (result) {
+    getFileHash(getAppDataDir() + zclPathParams + "/sprout-proving.key", function (result) {
         if (result === "8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7") {
             keyVerification.proving = true;
         }
         else {
             keyVerification.provingDownloading = true;
-            fileDownload("https://z.cash/downloads/sprout-proving.key", getAppDataDir() + "/ZcashParams/sprout-proving.key",
+            fileDownload("https://z.cash/downloads/sprout-proving.key", getAppDataDir() + zclPathParams + "/sprout-proving.key",
                 function () {
                     keyVerification.proving = true;
                     keyVerification.provingDownloading = false;
@@ -254,14 +263,9 @@ function startWallet() {
             app.exit(1);
         }
         
-        //if (!zcashd) {
-			let bob = keyVerification.verifying + " " + keyVerification.proving + " " + configComplete + " " + initWalletCount;
-			dialog.showErrorBox(bob, "bob");
-		if (!zcashd && (keyVerification.verifying === true && keyVerification.proving === true && configComplete === true && initWalletCount < 1)) {
+		if (!zcashd && (keyVerification.verifying === true && keyVerification.proving === true && configComplete === true)) {
             try {
                 zcashd = spawn(cmd);
-				console.log(zcashd);
-				console.log(initWalletCount);
             }
             catch (err) {
                 dialog.showErrorBox("Could not start wallet daemon", "Double-check the configuration settings.");
@@ -345,8 +349,6 @@ function createWindow() {
     }
     wallet = require("./wallet.js");
 	
-	
-	
     mainWindow = new BrowserWindow({
         "minWidth": 1040,
         "minHeight": 680,
@@ -362,7 +364,7 @@ function createWindow() {
         slashes: true
     }));
 
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 
     mainWindow.on("closed", function () {
         mainWindow = null;
