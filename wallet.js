@@ -39,7 +39,7 @@ if ((config.confPathWin.length > 0 && fs.existsSync(config.confPathWin)) ||
     if ((config.coin.toLowerCase() === "zcl") && ((os.platform() === "win32") || (os.platform() === "darwin"))) {
         coinConf = app.getPath("appData") + "/Zclassic/zclassic.conf";
     } else if (config.coin.toLowerCase() === "zcl") {
-        coinConf = app.getPath("home") + "/.config/.zclassic/zclassic.conf";
+        coinConf = app.getPath("home") + "/.zclassic/zclassic.conf";
     }
 }
 

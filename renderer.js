@@ -148,6 +148,8 @@ ipcRenderer.on("jsonQuery-reply", (event, arg) => {
 		if(isNaN(status))
 			status = 0;
 		
+		document.getElementById("syncStatusValue").innerHTML = status;
+		
         if (status < 100) {
             document.getElementById("syncStatusLabel").style.backgroundColor = "black";
         }

@@ -91,6 +91,16 @@ function getUserDataDir() {
     return app.getPath("userData");
 }
 
+function getAppDataDir() {
+	if ((os.platform() === "win32") || (os.platform() === "darwin")) {
+        return getAppDataDir();
+    }
+    else {
+        return app.getPath("home");
+    }
+	
+}
+
 function clearConfig(callback) {
     data = {
         "coin": "zcl",
@@ -120,8 +130,8 @@ function checkCoinConfig(callback) {
         return;
     }
 
-    // generic locations for zclassic, zcash, and zencash
-    let zclPath, zecPath, zenPath;
+    // generic locations for zclassic
+    let zclPath;
     if ((os.platform() === "win32") || (os.platform() === "darwin")) {
         zclPath = "/Zclassic";
     }
@@ -130,9 +140,9 @@ function checkCoinConfig(callback) {
     }
 
     // check if coin configuration files exist and if not write them
-    if ((config.coin.toLowerCase() === "zcl") && (!fs.existsSync(app.getPath("appData") + zclPath + "/zclassic.conf"))) {
-        if (!fs.existsSync(app.getPath("appData") + zclPath)) {
-            fs.mkdirSync(app.getPath("appData") + zclPath);
+    if ((config.coin.toLowerCase() === "zcl") && (!fs.existsSync(getAppDataDir() + zclPath + "/zclassic.conf"))) {
+        if (!fs.existsSync(getAppDataDir() + zclPath)) {
+            fs.mkdirSync(getAppDataDir() + zclPath);
         }
 		let data = [
 			"rpcuser=zclrpc",
@@ -142,7 +152,7 @@ function checkCoinConfig(callback) {
 			"addnode=eu1.zclassic.org",
 			"addnode=as1.zclassic.org"
 		];
-		fs.writeFileSync(app.getPath("appData") + zclPath + "/zclassic.conf", data.join("\n"));
+		fs.writeFileSync(getAppDataDir() + zclPath + "/zclassic.conf", data.join("\n"));
     }
 
     if (typeof callback === "function") {
@@ -186,29 +196,29 @@ function checkParams() {
         keyVerification.provingDownloading === true) {
         return;
     }
-    if (!fs.existsSync(app.getPath("appData") + "/ZcashParams/")) {
-        fs.mkdirSync(app.getPath("appData") + "/ZcashParams/");
+    if (!fs.existsSync(getAppDataDir() + "/ZcashParams/")) {
+        fs.mkdirSync(getAppDataDir() + "/ZcashParams/");
     }
-    getFileHash(app.getPath("appData") + "/ZcashParams/sprout-verifying.key", function (result) {
+    getFileHash(getAppDataDir() + "/ZcashParams/sprout-verifying.key", function (result) {
         if (result === "4bd498dae0aacfd8e98dc306338d017d9c08dd0918ead18172bd0aec2fc5df82") {
             keyVerification.verifying = true;
         }
         else {
             keyVerification.verifyingDownloading = true;
-            fileDownload("https://z.cash/downloads/sprout-verifying.key", app.getPath("appData") + "/ZcashParams/sprout-verifying.key",
+            fileDownload("https://z.cash/downloads/sprout-verifying.key", getAppDataDir() + "/ZcashParams/sprout-verifying.key",
                 function () {
                     keyVerification.verifying = true;
                     keyVerification.verifyingDownloading = false;
                 });
         }
     });
-    getFileHash(app.getPath("appData") + "/ZcashParams/sprout-proving.key", function (result) {
+    getFileHash(getAppDataDir() + "/ZcashParams/sprout-proving.key", function (result) {
         if (result === "8bc20a7f013b2b58970cddd2e7ea028975c88ae7ceb9259a5344a16bc2c0eef7") {
             keyVerification.proving = true;
         }
         else {
             keyVerification.provingDownloading = true;
-            fileDownload("https://z.cash/downloads/sprout-proving.key", app.getPath("appData") + "/ZcashParams/sprout-proving.key",
+            fileDownload("https://z.cash/downloads/sprout-proving.key", getAppDataDir() + "/ZcashParams/sprout-proving.key",
                 function () {
                     keyVerification.proving = true;
                     keyVerification.provingDownloading = false;
@@ -243,15 +253,21 @@ function startWallet() {
             dialog.showErrorBox("Wallet daemon can not be run.", "Check if daemon does not run already.");
             app.exit(1);
         }
-        initWalletCount++;
-        if (!zcashd && (keyVerification.verifying === true && keyVerification.proving === true && configComplete === true)) {
+        
+        //if (!zcashd) {
+			let bob = keyVerification.verifying + " " + keyVerification.proving + " " + configComplete + " " + initWalletCount;
+			dialog.showErrorBox(bob, "bob");
+		if (!zcashd && (keyVerification.verifying === true && keyVerification.proving === true && configComplete === true && initWalletCount < 1)) {
             try {
                 zcashd = spawn(cmd);
+				console.log(zcashd);
+				console.log(initWalletCount);
             }
             catch (err) {
                 dialog.showErrorBox("Could not start wallet daemon", "Double-check the configuration settings.");
             }
         }
+		initWalletCount++;
     }
 }
 
@@ -346,7 +362,7 @@ function createWindow() {
         slashes: true
     }));
 
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.on("closed", function () {
         mainWindow = null;
