@@ -24,8 +24,7 @@ git clone https://github.com/zencashio/eleos.git eleos
 cd ~/Builds/eleos
 ```
 npm install 
-
-
+```
 Copy the Zclassic/Zcash wallet daemon into the elos directory (name the binary zcld-linux)
 ```
 cp ~/Builds/zclassic/src/zcashd ~/Builds/eleos/zcld-linux
