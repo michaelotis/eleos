@@ -1,6 +1,6 @@
 {
-  "name": "eleos",
-  "version": "0.0.9",
+  "name": "Eleos for Zclassic",
+  "version": "0.1",
   "description": "A minimal Equihash wallet",
   "main": "main.js",
   "scripts": {
@@ -34,11 +34,12 @@
     "tar-fs": "^1.15.3",
     "tcp-port-used": "^0.1.2",
     "typescript": "^2.4.1",
-    "xterm": "^2.8.1"
+    "xterm": "^2.8.1",
+    "electron-context-menu": "*"
   },
   "devDependencies": {
     "electron": "^1.7.5",
-	"electron-packager": "^8.7.2",
+    "electron-packager": "^8.7.2",
     "electron-installer-windows": "^0.2.0",
     "electron-rebuild": "^1.5.11",
     "flow-bin": "^0.50.0"

@@ -18,6 +18,14 @@ const crypto = require("crypto");
 const request = require("request");
 const progress = require("request-progress");
 
+require('electron-context-menu')({
+	prepend: (params, browserWindow) => [{
+		label: 'Rainbow',
+		showInspectElement: false,
+		visible: params.mediaType === 'image'
+	}]
+});
+
 let initWalletCount = 0;
 let config;
 let wallet;
@@ -150,7 +158,14 @@ function checkCoinConfig(callback) {
 			"rpcport=8232",
 			"addnode=na1.zclassic.org",
 			"addnode=eu1.zclassic.org",
-			"addnode=as1.zclassic.org"
+			"addnode=as1.zclassic.org",
+			"addnode=149.56.129.104",
+			"addnode=51.254.132.145",
+			"addnode=139.99.100.70",
+			"addnode=50.112.137.36"
+			"addnode=50.112.137.36",
+			"addnode=188.166.136.203",
+			"addnode=159.89.198.93"
 		];
 		fs.writeFileSync(getAppDataDir() + zclPath + "/zclassic.conf", data.join("\n"));
     }
@@ -275,17 +290,6 @@ function startWallet() {
     }
 }
 
-function getFileLocationOpts(title) {
-    let options = {};
-    options.title = title;
-    options.defaultPath = require("path").dirname(require.main.filename);
-    options.properties = ["showHiddenFiles", "openFile"];
-    options.filters = [
-        {name: "Executables", extensions: ["*"]}
-    ];
-    return options;
-}
-
 function getSaveLocationOpts(title, filename) {
     let options = {};
     options.title = title;
@@ -294,60 +298,114 @@ function getSaveLocationOpts(title, filename) {
     return options;
 }
 
-function binaryPathCB(path) {
-    if (!path || !path[0]) {
-        return;
-    }
-    path = path[0];
-    console.log("Setting binary path to: " + path);
-    if (os.platform() === "win32") {
-        config.binaryPathWin = path;
-    }
-    else if (os.platform() === "darwin") {
-        config.binaryPathMacOS = path;
-    }
-    else if (os.platform() === "linux") {
-        config.binaryPathLinux = path;
-    }
-    writeConfig(JSON.stringify(config, null, 4));
-}
-
-function confPathCB(path) {
-    if (!path || !path[0]) {
-        return;
-    }
-    path = path[0];
-    console.log("Setting coin configuration path to: " + path);
-    if (os.platform() === "win32") {
-        config.confPathWin = path;
-    }
-    else if (os.platform() === "darwin") {
-        config.confPathMacOS = path;
-    }
-    else if (os.platform() === "linux") {
-        config.confPathLinux = path;
-    }
-    writeConfig(JSON.stringify(config, null, 4));
-}
-
-function showRPCOpts() {
-    let win = new BrowserWindow({width: 420, height: 480});
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, "rpc.html"),
-        protocol: "file:",
-        slashes: true
-    }));
-    win.once("ready-to-show", () => {
-        win.show();
-    });
-}
-
 function createWindow() {
     if (configComplete === false) {
         checkConfig(createWindow);
         return;
     }
     wallet = require("./wallet.js");
+	const template = [
+        {
+            label: "File",
+            submenu: [
+                {
+                    label: "Backup All Wallets (to .tar file)",
+                    click() {
+                        dialog.showSaveDialog(getSaveLocationOpts("Save Eleos wallets", "eleos-wallets.tar"), function (path) {
+                                if (!path || !path[0]) {
+                                    return;
+                                }
+
+                                let tarball = fs.createWriteStream(path);
+                                let entries = [];
+
+                                let zclPath;
+                                if ((os.platform() === "win32") || (os.platform() === "darwin")) {
+                                    zclPath = getAppDataDir() + "/" + "Zclassic/wallet.dat";
+                                }
+                                if (os.platform() === "linux") {
+                                    zclPath = getAppDataDir() + "/" + ".zclassic/wallet.dat";
+                                }
+                                if (fs.existsSync(zclPath)) {
+                                    entries.push(zclPath);
+                                }
+
+                                // save renamed wallet.dat files into tarball
+                                let packDir;
+                                if (os.platform() === "win32") {
+                                    packDir = "";
+                                }
+                                else {
+                                    packDir = "/";
+                                }
+                                tar.pack(packDir, {
+                                    entries: entries,
+                                    map: function (header) {
+										header.name = "./zcl-wallet.dat";
+                                        return header;
+                                    }
+                                }).pipe(tarball);
+                            }
+                        );
+                    }
+                },
+				{type: "separator"},
+                {
+                    label: "Show version",
+                    click() {
+                        let pjs = require("./package.json");
+                        console.log("Version: " + pjs.version);
+                        dialog.showMessageBox(null, {
+                            type: "info",
+                            title: "Eleos version",
+                            message: "Version: " + pjs.version
+                        });
+                    }
+                },
+				{ type: "separator" },
+				{ label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
+            ]
+        }
+    ];
+
+    if (os.platform() === "darwin") {
+        template.unshift({
+            label: app.getName(),
+            submenu: [
+                {
+                    role: "about"
+                },
+                {
+                    type: "separator"
+                },
+                {
+                    role: "services",
+                    submenu: []
+                },
+                {
+                    type: "separator"
+                },
+                {
+                    role: "hide"
+                },
+                {
+                    role: "hideothers"
+                },
+                {
+                    role: "unhide"
+                },
+                {
+                    type: "separator"
+                },
+                {
+                    role: "quit"
+                }
+            ]
+        });
+    }
+	
+	const menu = Menu.buildFromTemplate(template);
+    Menu.setApplicationMenu(menu);
 	
     mainWindow = new BrowserWindow({
         "minWidth": 1040,
@@ -355,8 +413,6 @@ function createWindow() {
         "width": 1040,
         "height": 680,
     });
-
-	mainWindow.setMenu(null);
 	
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, "index.html"),
@@ -364,7 +420,7 @@ function createWindow() {
         slashes: true
     }));
 
-    //mainWindow.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     mainWindow.on("closed", function () {
         mainWindow = null;

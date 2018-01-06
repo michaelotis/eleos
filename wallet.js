@@ -73,13 +73,7 @@ rl.on("close", function () {
         if (config.rpcPort.length > 0) {
             rpcPort = config.rpcPort;
         } else {
-            if (config.coin === "zcl") {
-                rpcPort = 8232;
-            } else if (config.coin === "zec") {
-                rpcPort = 8233;
-            } else if (config.coin === "zen") {
-                rpcPort = 8231;
-            }
+            rpcPort = 8232;
         }
     }
 

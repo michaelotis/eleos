@@ -160,7 +160,6 @@ ipcRenderer.on("jsonQuery-reply", (event, arg) => {
     else if (arg.id === "z_gettotalbalance" && arg.result) {
         document.getElementById("currentBalanceValue").innerHTML = arg.result.total;
         document.getElementById("transparentBalanceValue").innerHTML = arg.result.transparent;
-        document.getElementById("transparentAvailableValue").innerHTML = arg.result.transparent;
         document.getElementById("privateBalanceValue").innerHTML = arg.result.private;
     }
     else if (arg.id === "listtransactions" && arg.result) {
@@ -368,7 +367,7 @@ function refreshUI() {
     }
     else if (options.length === oldOptions.length) {
         for (let i = 0; i < options.length; i++) {
-            if (options[i].value !== oldOptions[i].value) {
+            if (options[i].text !== oldOptions[i].text) {
                 different = true;
             }
         }
