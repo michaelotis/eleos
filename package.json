@@ -1,6 +1,6 @@
 {
-  "name": "Eleos for Zclassic",
-  "version": "0.1",
+  "name": "Eleos",
+  "version": "0.1.0",
   "description": "A minimal Equihash wallet",
   "main": "main.js",
   "scripts": {

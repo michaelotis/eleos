@@ -162,7 +162,7 @@ function checkCoinConfig(callback) {
 			"addnode=149.56.129.104",
 			"addnode=51.254.132.145",
 			"addnode=139.99.100.70",
-			"addnode=50.112.137.36"
+			"addnode=50.112.137.36",
 			"addnode=50.112.137.36",
 			"addnode=188.166.136.203",
 			"addnode=159.89.198.93"
@@ -420,7 +420,7 @@ function createWindow() {
         slashes: true
     }));
 
-    mainWindow.webContents.openDevTools();
+    //mainWindow.webContents.openDevTools();
 
     mainWindow.on("closed", function () {
         mainWindow = null;
