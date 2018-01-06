@@ -16,6 +16,7 @@ The simplest way to get started on Windows or MacOS is to [download and run the 
 
 ##### Linux
 Note: Eleos requires that the compiled wallets are named zcld-linux and are saved into the eleos directory.
+You can compile yourself or get the file here : https://github.com/HarrKxx/eleos/releases/tag/0.1.0
 
 Get the source
 ```
@@ -47,6 +48,11 @@ Eleos is primarily designed for Zcash-based cryptocurrencies. The wallet.dat for
 ### Development
 
 Want to contribute? Great! We need help.
+
+
+### Donation
+If you consider to make a donation, here are our addresses :
+ZCL : t1LYLVqpy9eHwA5zaC3EoQnAsNwFAYDs35p
 
 
 ### Todos
