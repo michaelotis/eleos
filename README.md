@@ -8,11 +8,11 @@ Eleos is a wallet for zero-knowledge cryptocurrencies written in Electron.
 
 ![Screenshot](https://i.imgur.com/hyvrCpX.jpg)
 
-### Installation
-Note: First time installations may take awhile to load since ~1GB of cryptographic data must be downloaded first.
+### First Time Run
+Note: First time run it may take awhile to load since ~1GB of cryptographic data must be downloaded first.
 
 ##### Windows and MacOS
-The simplest way to get started on Windows or MacOS is to [download and run the latest installer](https://github.com/michaelotis/eleos/releases).
+The simplest way to get started on Windows or Mac OS is to [download and run the latest standlone application](https://github.com/michaelotis/eleos/releases). No need for installation!
 
 ##### Linux
 Note: Eleos requires that the compiled wallets are named zcld-linux and are saved into the eleos directory.
