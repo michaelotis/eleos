@@ -5,13 +5,13 @@
     <key>BuildMachineOSBuild</key>
     <string>16G1036</string>
     <key>CFBundleDisplayName</key>
-    <string>zclassic Helper EH</string>
+    <string>ZClassic Helper EH</string>
     <key>CFBundleExecutable</key>
-    <string>zclassic Helper EH</string>
+    <string>ZClassic Helper EH</string>
     <key>CFBundleIdentifier</key>
     <string>com.electron.zclassic.helper.EH</string>
     <key>CFBundleName</key>
-    <string>zclassic Helper EH</string>
+    <string>ZClassic Helper EH</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>DTSDKBuild</key>

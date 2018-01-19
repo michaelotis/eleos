@@ -147,7 +147,7 @@ function generateMemoTable(memos) {
 	
 	    // Add event listener for opening and closing details
 		$(document).ready(function () {
-    $('#transactionsTable tbody').on('click', 'td.details-control', function () {
+    $('#memoTable tbody').on('click', 'td.details-control', function () {
 		var getTable = $('#memoTable').DataTable();
         var tr = $(this).closest('tr');
         var row = getTable.row(tr);
@@ -208,7 +208,7 @@ function generateHistoryTable(txs, privTxs, override) {
 	
     let combinedTxs = [].concat(txs, privTxs);
 	var totalTxs = combinedTxs.length - 1;
-	if(totalTxs.length > 0){
+	if(totalTxs > 0){
 	localStorage.zclLastTX =  combinedTxs[totalTxs].txid;
     combinedTxs.sort(function (a, b) {
         if (b.time === a.time) {
@@ -238,7 +238,11 @@ function generateHistoryTable(txs, privTxs, override) {
 							let td = tr.insertCell(-1);
 							let getProp = heading[x].toLowerCase();
 							if(heading[x] != "Time" && heading[x] != ""){
+								if(getProp == "address" && !combinedTxs[i][getProp]){
+									td.innerHTML = "Private Address";
+								} else {
 							td.innerHTML = combinedTxs[i][getProp];
+								}
 							}  else if(heading[x] ==  "Time") {
 								let datetime = new Date(combinedTxs[i].time * 1000);
 								combinedTxs[i].time = datetime;
@@ -301,9 +305,14 @@ function generateHistoryTable(txs, privTxs, override) {
 
 		    var combinedTxs = [].concat(txs, privTxs);
 			var getLastTX = generateQuerySync("gettransaction", [localStorage.zclLastTX]);
+
 			var result = $.grep(combinedTxs, function(e){ return e.time > getLastTX.result.time})
 			if(result.length > 0){
+				if(getLastTX.result.vjoinsplit.length > 0){
+					localStorage.zclLastTX = result[0].txid;
+				} else {
 					generateHistoryTable(txs, privTxs, true);
+				}
 			}
 	
 }
@@ -374,6 +383,17 @@ ipcRenderer.on("jsonQuery-reply", (event, arg) => {
     else if (arg.id === "listreceivedbyaddress" && arg.result) {
         let table = [];
         let ctr = 0;
+			
+			
+			for(var x = 0; x < arg.result.length; x++){
+				var total = 0;
+				var getUnspent =  generateQuerySync("listunspent", [0, 9999999, [arg.result[x].address]]);
+				for(var i = 0; i < getUnspent.result.length; i++){
+					total = total + getUnspent.result[i].amount
+				}
+				arg.result[x].amount = total;
+		
+			}
 		
 		var byAmount = arg.result.slice(0);
 			byAmount.sort(function(a,b) {

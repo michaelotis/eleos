@@ -25,7 +25,7 @@
   "scripts": {
     "start": "electron .",
     "package-win": "electron-packager . ZClassic-Eleos-Wallet --overwrite --platform=win32 --arch=x64 --icon=assets/icons/zcl.ico --prune=true --out=release-builds --version-string.CompanyName=Otis --version-string.FileDescription=\"ZClassic Eleos Wallet\" --version-string.ProductName=\"ZClassic Eleos Wallet\"",
-    "package-mac": "electron-packager ./ zclassic --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
+    "package-mac": "electron-packager ./ ZClassic --overwrite --platform=darwin --arch=x64 --prune=true --out=release-builds",
     "create-installer-mac": "electron-installer-dmg ./release-builds/zclassic-darwin-x64/zclassic.app zclassic --out=release-builds --overwrite",
     "create-installer-win": "node createinstaller.js"
   },

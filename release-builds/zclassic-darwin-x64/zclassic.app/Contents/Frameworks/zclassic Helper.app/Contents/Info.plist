@@ -7,7 +7,7 @@
     <key>CFBundleIdentifier</key>
     <string>com.electron.zclassic.helper</string>
     <key>CFBundleName</key>
-    <string>zclassic</string>
+    <string>ZClassic</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>DTSDKBuild</key>
@@ -23,8 +23,8 @@
     <key>NSSupportsAutomaticGraphicsSwitching</key>
     <true/>
     <key>CFBundleDisplayName</key>
-    <string>zclassic Helper</string>
+    <string>ZClassic Helper</string>
     <key>CFBundleExecutable</key>
-    <string>zclassic Helper</string>
+    <string>ZClassic Helper</string>
   </dict>
 </plist>
