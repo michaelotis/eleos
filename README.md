@@ -16,7 +16,7 @@ The simplest way to get started on Windows or Mac OS is to [download and run the
 
 ##### Linux
 Note: Eleos requires that the compiled wallets are named zcld-linux and are saved into the eleos directory.
-You can compile yourself or get the file here : https://github.com/michaelotis/eleos/releases/tag/0.1.0
+You can compile yourself or get the file here : https://github.com/michaelotis/eleos/releases/tag/1.0
 
 Get the source
 ```
