@@ -168,7 +168,7 @@
                         <div class="form-group">
                             <label for="privateFromField">From</label><select class="form-control" id="privateFromSelect" title="privateFromSelect"></select>
                             <label for="privateSendToField">Send To</label><input class="form-control" type="text" id="privateSendToValue" title="privateSendToValue"/>
-                            <label for="privateAmountField">Amount <span>(Fee 0.0001)</span></label><input class="form-control" placeholder="0.0001" step="0.0001" type="number" id="privateAmountValue" title="privateAmountValue"/>
+                            <label for="privateAmountField">Amount <span>(Fee 0.0001)</span></label><input class="form-control" step="1" type="number" id="privateAmountValue" title="privateAmountValue"/>
                             <label for="privateMemoField">Encrypted Memo <span>(optional)</span></label><input class="form-control" type="text" id="privateMemoValue" title="privateMemoValue"/>
                         </div>
                         <div class="form-group">
@@ -393,7 +393,7 @@
 		document.execCommand("copy");
 		document.body.removeChild(aux);
 	$.notify({
-		title: "<strong>Address Created and Copied To Clipboard</strong>",
+		title: "<i class='fa fa-clipboard fa-3x' style='float:right'></i> <strong>Address Created and Copied To Clipboard</strong>",
 		message: newTransparentAddress
 	},{
 		allow_dismiss: false,
@@ -410,7 +410,7 @@
 		document.execCommand("copy");
 		document.body.removeChild(aux);
 				$.notify({
-	title: "<strong>Address Created and Copied To Clipboard</strong>",
+	title: "<i class='fa fa-clipboard fa-3x' style='float:right'></i> <strong>Address Created and Copied To Clipboard</strong>",
 	message: newPrivateAddress
 	},{
 		allow_dismiss: false,
@@ -428,7 +428,7 @@ var aux = document.createElement("input");
 		document.execCommand("copy");
 		document.body.removeChild(aux);
 				$.notify({
-	title: "<strong>Private Key Copied To Clipboard</strong>",
+	title: "<i class='fa fa-clipboard fa-3x' style='float:right'></i> <strong>Private Key Copied To Clipboard</strong>",
 	message: pKey.result
 	},{
 		allow_dismiss: false,
@@ -446,7 +446,7 @@ var aux = document.createElement("input");
 		document.execCommand("copy");
 		document.body.removeChild(aux);
 $.notify({
-	title: "<strong>Private Key Copied To Clipboard</strong>",
+	title: "<i class='fa fa-clipboard fa-3x' style='float:right'></i> <strong>Private Key Copied To Clipboard</strong>",
 	message: pKey.result
 	},{
 		allow_dismiss: false,
@@ -515,8 +515,7 @@ $.notify({
 			}); 
 			  } else {
 			  				$.notify({
-	icon: 'fa fa-exchange',
-	message: "Successfully transmitted transaction.\r\n\r\nTXID: " + arg.result
+	message: "<i class='fa fa-exchange fa-3x' style='float:right'></i> Successfully transmitted transaction.<br/>TXID: " + arg.result
 	},{
 		allow_dismiss: false,
 	type: 'warning'
@@ -526,7 +525,7 @@ $.notify({
           }
           else {
               let memo = stringToHex(document.getElementById("privateMemoValue").value);
-              renderer.generateQuery('z_sendmany', [from, [{'address': address, 'amount': amount, 'memo': memo}]]);
+              let arg = renderer.generateQuery('z_sendmany', [from, [{'address': address, 'amount': amount, 'memo': memo}]]);
 			  if (arg.result === null) {
 			  				$.notify({
 			message: arg.error.message
@@ -536,8 +535,7 @@ $.notify({
 }); 
 			  } else {
 			  $.notify({
-	icon: 'fa fa-exchange',
-	message: "Successfully transmitted transaction.\r\n\r\nTXID: " + arg.result
+	message: "<i class='fa fa-exchange fa-3x' style='float:right'></i> Successfully transmitted transaction.<br/>TXID: " + arg.result
 	},{
 		allow_dismiss: false,
 	type: 'warning'

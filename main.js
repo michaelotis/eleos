@@ -165,7 +165,7 @@ function checkCoinConfig(callback) {
 			"addnode=188.166.136.203",
 			"addnode=159.89.198.93"
 		];
-		fs.writeFileSync(getAppDataDir() + zclPath + "/zclassic.conf", data.join("\n"));
+		fs.writeFileSync(getAppDataDir() + zclPath + "/zclassic.conf", data.join("\r\n"));
     }
 
     if (typeof callback === "function") {
