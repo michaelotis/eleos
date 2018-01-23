@@ -284,7 +284,10 @@ function generateHistoryTable(txs, privTxs, override) {
 		$(document).ready(function () {
 
     $('#transactionsTable tbody').on('click', 'td.details-control', function () {
-		var getTable = $('#transactionsTable').DataTable();
+		if ( $.fn.dataTable.isDataTable( '#transactionsTable' ) ) {
+			var getTable = $("#transactionsTable").DataTable();
+		
+		
         var tr = $(this).closest('tr');
         var row = getTable.row(tr);
  
@@ -298,6 +301,7 @@ function generateHistoryTable(txs, privTxs, override) {
             row.child( format(tr[0].id)).show();
             tr.addClass('shown');
         }
+		}
     } );
 		});	  
 
