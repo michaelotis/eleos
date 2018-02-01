@@ -312,7 +312,7 @@ function generateHistoryTable(txs, privTxs, override) {
 
 			var result = $.grep(combinedTxs, function(e){ return e.time > getLastTX.result.time})
 			if(result.length > 0){
-				if(getLastTX.result.vjoinsplit.length > 0){
+				if(result[0].txid != localStorage.zclLastTX){
 					localStorage.zclLastTX = result[0].txid;
 				} else {
 					generateHistoryTable(txs, privTxs, true);
