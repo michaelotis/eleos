@@ -12,7 +12,7 @@
   "author": "ZClassic Development Team",
   "license": "CPAL-1.0",
   "devDependencies": {
-    "electron": "^1.7.8",
+    "electron": ">=9.4.0",
     "electron-installer-dmg": "*",
     "electron-installer-windows": "^0.2.0",
     "electron-packager": "^8.1.0",
@@ -51,6 +51,6 @@
     "tar-fs": "^1.15.3",
     "tcp-port-used": "^0.1.2",
     "typescript": "^2.4.1",
-    "xterm": "^2.8.1"
+    "xterm": ">=3.8.1"
   }
 }
