@@ -17,6 +17,7 @@
     "electron-installer-windows": "^0.2.0",
     "electron-packager": "^8.1.0",
     "electron-winstaller": "^2.4.1"
+
   },
   "repository": {
     "type": "git",
@@ -35,11 +36,14 @@
     "electron-context-menu": "*",
     "errors": "^0.3.0",
     "express": "^4.15.3",
+     "hosted-git-info": ">=2.8.9"
     "express-ws": "^3.0.0",
     "ht-auth": "^0.1.0",
     "http-auth": "^3.2.3",
     "jquery": "^3.2.1",
     "jsdom": "^11.5.1",
+    "lodash": ">=4.17.21"
+    "trim": ">=0.0.3"
     "minimatch": "^3.0.4",
     "node-gyp": "^3.6.2",
     "node-pty": "^0.6.10",
